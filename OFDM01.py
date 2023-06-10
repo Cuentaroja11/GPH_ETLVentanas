@@ -5,10 +5,15 @@ from bs4 import BeautifulSoup
 def extraer_info(carpeta_entrada):
     archivos_html = [f for f in os.listdir(carpeta_entrada) if f.endswith('.html')]
 
+    # Crear carpeta de salida si no existe
+    carpeta_salida = os.path.join(os.path.dirname(carpeta_entrada), 'OFDMFiles')
+    if not os.path.exists(carpeta_salida):
+        os.makedirs(carpeta_salida)
+
     for archivo_html in archivos_html:
         ruta_html = os.path.join(carpeta_entrada, archivo_html)
         nombre_archivo = os.path.splitext(archivo_html)[0]
-        archivo_salida = f'{nombre_archivo}.xlsx'
+        archivo_salida = os.path.join(carpeta_salida, f'{nombre_archivo}.xlsx')
 
         with open(ruta_html, 'r') as file:
             contenido = file.read()
@@ -40,4 +45,5 @@ def extraer_info(carpeta_entrada):
 
 carpeta_entrada = 'datos'
 extraer_info(carpeta_entrada)
+
 

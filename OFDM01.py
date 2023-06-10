@@ -25,25 +25,23 @@ def extraer_info(carpeta_entrada):
             encabezados = tabla.find_all('th')
             if len(encabezados) >= 3 and encabezados[0].get_text() == 'Canal' and encabezados[1].get_text() == 'OFDM 1' and encabezados[2].get_text() == 'OFDM 2':
                 datos_extraidos = []
-                fila_encabezados = [encabezado.get_text() for encabezado in encabezados]
+                fila_encabezados = [encabezados[0].get_text(), encabezados[1].get_text(), encabezados[2].get_text()]
                 datos_extraidos.append(fila_encabezados)
 
                 filas_datos = tabla.find_all('tr')
-                for i in range(1, len(filas_datos)):
-                    fila = filas_datos[i]
+                for fila in filas_datos[1:]:
                     celdas = fila.find_all(['th', 'td'])
-                    datos_fila = [celda.get_text() for celda in celdas]
+                    datos_fila = [celda.get_text() for celda in celdas[0:3]]  # Obtener solo los datos de las primeras tres columnas
                     datos_extraidos.append(datos_fila)
 
-                # Transponer datos para mostrar los valores de las columnas 1 y 2 en filas debajo de la primera fila
-                datos_transpuestos = list(map(list, zip(*datos_extraidos)))
+                # Agregar última fila con el nombre del archivo analizado
+                nombre_archivo_fila = ['Archivo', nombre_archivo, nombre_archivo]
+                datos_extraidos.append(nombre_archivo_fila)
 
-                df = pd.DataFrame(datos_transpuestos)
+                df = pd.DataFrame(datos_extraidos).transpose()  # Transponer el DataFrame
                 df.to_excel(archivo_salida, index=False, header=False)
 
                 print(f"Se ha extraído la tabla del archivo {nombre_archivo} y se ha guardado en el archivo Excel {archivo_salida}.")
 
 carpeta_entrada = 'datos'
 extraer_info(carpeta_entrada)
-
-

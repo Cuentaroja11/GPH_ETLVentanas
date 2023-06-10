@@ -23,19 +23,19 @@ def extraer_info(carpeta_entrada):
 
         for tabla in tablas:
             encabezados = tabla.find_all('th')
-            if len(encabezados) >= 3 and encabezados[0].get_text() == 'Canal' and encabezados[1].get_text() == 'OFDM 1' and encabezados[2].get_text() == 'OFDM 2':
+            if len(encabezados) >= 2 and encabezados[1].get_text() == 'OFDM 1':
                 datos_extraidos = []
-                fila_encabezados = [encabezados[0].get_text(), encabezados[1].get_text(), encabezados[2].get_text()]
+                fila_encabezados = [encabezados[0].get_text(), encabezados[1].get_text()]
                 datos_extraidos.append(fila_encabezados)
 
                 filas_datos = tabla.find_all('tr')
                 for fila in filas_datos[1:]:
                     celdas = fila.find_all(['th', 'td'])
-                    datos_fila = [celda.get_text() for celda in celdas[0:3]]  # Obtener solo los datos de las primeras tres columnas
+                    datos_fila = [celda.get_text() for celda in celdas[0:2]]  # Obtener solo los datos de las primeras dos columnas
                     datos_extraidos.append(datos_fila)
 
                 # Agregar última fila con el nombre del archivo analizado
-                nombre_archivo_fila = ['Archivo', nombre_archivo, nombre_archivo]
+                nombre_archivo_fila = ['Archivo', nombre_archivo]
                 datos_extraidos.append(nombre_archivo_fila)
 
                 df = pd.DataFrame(datos_extraidos).transpose()  # Transponer el DataFrame

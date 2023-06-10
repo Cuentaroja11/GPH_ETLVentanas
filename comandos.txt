@@ -1,0 +1,5 @@
+python 3
+pip
+pip install bs4
+pip install pandas
+pip install openpyxl

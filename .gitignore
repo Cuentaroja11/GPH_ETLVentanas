@@ -1,0 +1,5 @@
+**/*.html
+**/*.xlsx
+
+!datos/*.html
+!/*.xlsx

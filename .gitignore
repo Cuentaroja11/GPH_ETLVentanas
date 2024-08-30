@@ -3,3 +3,6 @@
 
 !datos/*.html
 !/*.xlsx
+
+.vs
+.idea
